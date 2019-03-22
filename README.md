@@ -22,3 +22,10 @@ can create, store, and edit a To-Do list from the command-line.
 ## Purpose
 The point of building this script is mostly to help me learn more about the Argparse module and file handling in Python.
 I will likely build on the base features further in the future with the more I learn.
+
+## Modules Used
+* **argparse**  - Used for writing the command-line interface.
+* **datetime** - For retrieving date/time information.
+* **os** - Used for creating, reading, and writing files. os also allows you to manipulate paths and file structures
+regardless of the operating system you are using to run the script.
+* **colorama** - Used for outputting coloured text to the terminal.
