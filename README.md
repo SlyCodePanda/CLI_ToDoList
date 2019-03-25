@@ -43,3 +43,4 @@ Builds a folder of To-Do Lists in the directory this script is stored in.
 * **os** - Used for creating, reading, and writing files. os also allows you to manipulate paths and file structures
 regardless of the operating system you are using to run the script.
 * **colorama** - Used for outputting coloured text to the terminal.
+* **webbrowser** - Used for opening text files with Notepad/Gedit when editing.
