@@ -7,7 +7,6 @@ can create, store, and edit a To-Do list from the command-line.
 * Ability to create a To-Do list which includes the following:
     * Date/Day
     * List of items
-    * Colour coding for priority
 * Be able to add items to an existing To-Do list.
 * Be able to cross off items on an existing list to signify task has been completed ([x]) 
 * Saves lists in a folder called `ToDoLists` with following naming structure :
@@ -16,6 +15,7 @@ can create, store, and edit a To-Do list from the command-line.
 ## Possible Future Features
 * Ability to clear out old To-Do lists after a given date from saved folder.
 * Name lists.
+* Colour coding for priority.
 * Track progress with progress bars.
 * Give time frame for tasks.
 
