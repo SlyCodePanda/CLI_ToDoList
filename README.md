@@ -23,6 +23,20 @@ can create, store, and edit a To-Do list from the command-line.
 The point of building this script is mostly to help me learn more about the Argparse module and file handling in Python.
 I will likely build on the base features further in the future with the more I learn.
 
+## Usage
+```
+todo.py [-h] [-n | -e | -v | -a | -m]
+
+optional arguments:
+  -h, --help  show this help message and exit
+  -n, --new   Create a new To-Do list.
+  -e, --edit  Edit an existing To-Do list
+  -v, --view  View todays To-Do List
+  -a, --add   Add task to today's list
+  -m, --mark  Mark off task from today's list
+```
+Builds a folder of To-Do Lists in the directory this script is stored in.
+
 ## Modules Used
 * **argparse**  - Used for writing the command-line interface.
 * **datetime** - For retrieving date/time information.
