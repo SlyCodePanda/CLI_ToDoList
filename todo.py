@@ -12,11 +12,13 @@ import webbrowser
 
 
 # Get the operating system that the script is running on.
+# nt = Windows.
 operating_system = os.name
 
-# Get current date.
+# Get current date and day.
 now = datetime.datetime.now()
 date = now.strftime("%d-%m-%Y")
+day = now.strftime("%A")
 
 #####################
 # Helper functions ##
@@ -35,14 +37,20 @@ def go_to_todo_folder():
         # Move to todoLists directory.
         os.chdir(current_dir + folder)
 
+    # ToDo : Add linux/iOS support.
+    else:
+        print(Fore.RED + "Your operating system is not currently supported...")
+
+    print(Style.RESET_ALL)
+
 
 def build_new_list(file):
     """
     Builds a new list with basic title.
     """
     f = open(file, "w+")
-    f.write("%s\n"
-            "== TO-DO LIST ==\n" % date)
+    f.write("%s, %s\n"
+            "== TO-DO LIST ==\n" % (date, day))
 
     f.close()
 
@@ -57,7 +65,6 @@ def create_new_list():
     Once we know that directory exists we then check if a list for today's date exists in the folder, if it doesn't
     then we create one. If the file already exists then we do nothing.
     """
-
 
     # If the user is running on Windows ('nt') run the following:
     if operating_system == 'nt':
@@ -93,9 +100,11 @@ def create_new_list():
             open(file_name, "w+")
             build_new_list(file_name)
 
-    print(Style.RESET_ALL)
-
     # ToDo : Add linux/iOS support.
+    else:
+        print(Fore.RED + "Your operating system is not currently supported...")
+
+    print(Style.RESET_ALL)
 
 
 def edit_list():
@@ -151,8 +160,9 @@ def add_item():
     todays_list = "%s_todoList.txt" % date
 
     while True:
-        print("What item(s) would you like to add to today's list?")
-        print("type 'quit' to exit")
+        print("What task(s) would you like to add to today's list?")
+        print(Fore.RED + "type 'quit' to exit")
+        print(Style.RESET_ALL)
         item = input("")
 
         if item != 'quit':
@@ -168,7 +178,36 @@ def mark_off_item():
     """
     Let's you mark off a completed task.
     """
-    pass
+    # Get today's list.
+    go_to_todo_folder()
+    # Get today's To-Do list.
+    todays_list = "%s_todoList.txt" % date
+
+    while True:
+        # Get the item you want to mark off.
+        print("What task did you complete?")
+        print(Fore.RED + "type 'quit' to exit")
+        print(Style.RESET_ALL)
+
+        task = input()
+        task_and_box = "[ ] %s" % task
+
+        # Opens the file and gets all the lines from it. Then re-opens the file in write mode and re-writes the lines
+        # back in until it gets to the task entered. When this tak is found it is re-written  with a cross in its box.
+        if task == 'quit':
+            break
+        else:
+            with open(todays_list, "r") as f:
+                lines = f.readlines()
+            with open(todays_list, "w") as f:
+                for line in lines:
+                    if line.strip("\n") != task_and_box:
+                        f.write(line)
+                    else:
+                        print(Fore.GREEN + "--- Task Complete! ---")
+                        print(task)
+                        print(Style.RESET_ALL)
+                        f.write("[X] %s\n" % task)
 
 
 #########
@@ -192,7 +231,8 @@ if __name__ == '__main__':
     group.add_argument("-n", "--new", help="Create a new To-Do list.", action="store_true")
     group.add_argument("-e", "--edit", help="Edit an existing To-Do list", action="store_true")
     group.add_argument("-v", "--view", help="View todays To-Do List", action="store_true")
-    group.add_argument("-a", "--add", help="Add item to today's list", action="store_true")
+    group.add_argument("-a", "--add", help="Add task to today's list", action="store_true")
+    group.add_argument("-m", "--mark", help="Mark off task from today's list", action="store_true")
 
     # Parsing arguments.
     args = parser.parse_args()
@@ -206,5 +246,7 @@ if __name__ == '__main__':
         view_list()
     elif args.add:
         add_item()
+    elif args.mark:
+        mark_off_item()
 
 
