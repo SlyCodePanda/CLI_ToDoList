@@ -1,0 +1,5 @@
+26-03-2019, Tuesday
+== TO-DO LIST ==
+[ ] Draw
+[X] Programming
+[ ] Stretch

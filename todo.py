@@ -24,25 +24,34 @@ day = now.strftime("%A")
 # Helper functions ##
 #####################
 
+def get_folder_path():
+    """
+    Builds the directory for storing To-Do lists based on the operating system that the script is being run in.
+    :return: folder path
+    """
+    # If running on Windows.
+    if operating_system == 'nt':
+        return "\\todoLists"
+    # If running on Linux.
+    elif operating_system == 'posix':
+        return "/todoLists"
+    else:
+        print(Fore.RED + "Your operating system is not currently supported...")
+        return ""
+
+    print(Style.RESET_ALL)
+
 
 def go_to_todo_folder():
     """
     Moves you from your current working directory to the To-Do Lists folder.
     Takes operating system into account.
     """
+    current_dir = os.getcwd()
+    folder = get_folder_path()
 
-    if operating_system == 'nt':
-        current_dir = os.getcwd()
-        folder = "\\todoLists"
-
-        # Move to todoLists directory.
-        os.chdir(current_dir + folder)
-
-    # ToDo : Add linux/iOS support.
-    else:
-        print(Fore.RED + "Your operating system is not currently supported...")
-
-    print(Style.RESET_ALL)
+    # Move to todoLists directory.
+    os.chdir(current_dir + folder)
 
 
 def build_new_list(file):
@@ -54,6 +63,7 @@ def build_new_list(file):
             "== TO-DO LIST ==\n" % (date, day))
 
     f.close()
+
 
 def print_list(file):
     """
@@ -80,45 +90,35 @@ def create_new_list():
     then we create one. If the file already exists then we do nothing.
     """
 
-    # If the user is running on Windows ('nt') run the following:
-    if operating_system == 'nt':
+    current_dir = os.getcwd()
+    folder = get_folder_path()
 
-        # Creating directory for storing To-Do list if one does not already exist.
-        current_dir = os.getcwd()
-        folder = "\\todoLists"
+    # Check if directory already exists. If it doesn't, create a new directory called 'todoLists'.
+    print("Looking for %s ..." % (current_dir + folder))
 
-        # Check if directory already exists. If it doesn't, create a new directory called 'todoLists'.
-        print("Looking for %s ..." % (current_dir+folder))
+    if os.path.isdir(current_dir + folder):
+        print(Fore.GREEN + "FOLDER FOUND!")
+        # Move to todoLists directory.
+        os.chdir(current_dir + folder)
 
-        if os.path.isdir(current_dir+folder):
-            print(Fore.GREEN + "FOLDER FOUND!")
-            # Move to todoLists directory.
-            os.chdir(current_dir+folder)
-
-            # Check if list already exists for today in folder.
-            if os.path.isfile("%s_todoList.txt" % date):
-                print("List already exists...")
-            else:
-                print(Fore.GREEN + "Creating new list...")
-                file_name = "%s_todoList.txt" % date
-                open(file_name, "w+")
-                build_new_list(file_name)
+        # Check if list already exists for today in folder.
+        if os.path.isfile("%s_todoList.txt" % date):
+            print("List already exists...")
         else:
-            print(Fore.RED + "Folder does not already exist, creating one now...")
-            os.mkdir(current_dir+folder)
-            # Move to todoLists directory.
-            os.chdir(current_dir + folder)
-            # Create new list.
             print(Fore.GREEN + "Creating new list...")
             file_name = "%s_todoList.txt" % date
             open(file_name, "w+")
             build_new_list(file_name)
-
-    # ToDo : Add linux/iOS support.
     else:
-        print(Fore.RED + "Your operating system is not currently supported...")
-
-    print(Style.RESET_ALL)
+        print(Fore.RED + "Folder does not already exist, creating one now...")
+        os.mkdir(current_dir + folder)
+        # Move to todoLists directory.
+        os.chdir(current_dir + folder)
+        # Create new list.
+        print(Fore.GREEN + "Creating new list...")
+        file_name = "%s_todoList.txt" % date
+        open(file_name, "w+")
+        build_new_list(file_name)
 
 
 def edit_list():
