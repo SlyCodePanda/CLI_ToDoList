@@ -24,6 +24,7 @@ day = now.strftime("%A")
 # Helper functions ##
 #####################
 
+
 def go_to_todo_folder():
     """
     Moves you from your current working directory to the To-Do Lists folder.
@@ -54,9 +55,22 @@ def build_new_list(file):
 
     f.close()
 
+def print_list(file):
+    """
+    Prints out the list stored in the file given
+    :param file: The list you would like to display.
+    """
+
+    # Opening file to read into command line.
+    with open(file) as f:
+        for line in f:
+            print(Fore.BLUE + line.strip())
+            print(Style.RESET_ALL)
+
 ###################
 # Main functions ##
 ###################
+
 
 def create_new_list():
     """
@@ -113,6 +127,8 @@ def edit_list():
     """
 
     print("Which list would you like to edit? :")
+    print(Fore.RED + "type 'quit' to exit")
+    print(Style.RESET_ALL)
 
     # Go to the to-do list folder and print it's contents.
     go_to_todo_folder()
@@ -132,6 +148,8 @@ def edit_list():
             # Opening text file in Notepad.
             webbrowser.open(file_to_edit)
             break
+        elif file_to_edit == 'quit':
+            break
         else:
             print(Fore.RED + "File entered does not exist in this directory.")
             print(Style.RESET_ALL)
@@ -145,11 +163,14 @@ def view_list():
     # Get today's To-Do list.
     todays_list = "%s_todoList.txt" % date
 
-    # Opening file to read into command line.
-    with open(todays_list) as f:
-        for line in f:
-            print(Fore.BLUE + line.strip())
-            print(Style.RESET_ALL)
+    # Check if there is a list that has been made today.
+    exists = os.path.isfile(todays_list)
+    if exists:
+        print_list(todays_list)
+    else:
+        print(Fore.RED + "No To-Do list made for today, to make a new list use the '-n' flag.")
+        print(Style.RESET_ALL)
+
 
 def add_item():
     """
@@ -159,20 +180,28 @@ def add_item():
     # Get today's To-Do list.
     todays_list = "%s_todoList.txt" % date
 
-    while True:
-        print("What task(s) would you like to add to today's list?")
-        print(Fore.RED + "type 'quit' to exit")
-        print(Style.RESET_ALL)
-        item = input("")
-
-        if item != 'quit':
-            print(Fore.GREEN + "---------------------------------------------------")
-            # Append to today's list.
-            f = open(todays_list, "a+")
-            f.write("[ ] %s\n" % item)
+    # Check if there is a list that has been made today.
+    exists = os.path.isfile(todays_list)
+    if exists:
+        while True:
+            print("What task(s) would you like to add to today's list?")
+            print(Fore.RED + "type 'quit' to exit")
             print(Style.RESET_ALL)
-        else:
-            break
+            item = input("")
+
+            if item != 'quit':
+                print(Fore.GREEN + "---------------------------------------------------")
+                # Append to today's list.
+                f = open(todays_list, "a+")
+                f.write("[ ] %s\n" % item)
+                print(Style.RESET_ALL)
+            else:
+                break
+    else:
+        print(Fore.RED + "No To-Do list made for today, to make a new list use the '-n' flag.")
+        print(Style.RESET_ALL)
+
+
 
 def mark_off_item():
     """
@@ -183,31 +212,38 @@ def mark_off_item():
     # Get today's To-Do list.
     todays_list = "%s_todoList.txt" % date
 
-    while True:
-        # Get the item you want to mark off.
-        print("What task did you complete?")
-        print(Fore.RED + "type 'quit' to exit")
+    # Check if there is a list that has been made today.
+    exists = os.path.isfile(todays_list)
+    if exists:
+        while True:
+            # Get the item you want to mark off.
+            print("What task did you complete?")
+            print_list(todays_list)
+            print(Fore.RED + "type 'quit' to exit")
+            print(Style.RESET_ALL)
+
+            task = input()
+            task_and_box = "[ ] %s" % task
+
+            # Opens the file and gets all the lines from it. Then re-opens the file in write mode and re-writes the lines
+            # back in until it gets to the task entered. When this tak is found it is re-written  with a cross in its box.
+            if task == 'quit':
+                break
+            else:
+                with open(todays_list, "r") as f:
+                    lines = f.readlines()
+                with open(todays_list, "w") as f:
+                    for line in lines:
+                        if line.strip("\n") != task_and_box:
+                            f.write(line)
+                        else:
+                            print(Fore.GREEN + "--- Task Complete! ---")
+                            print(task)
+                            print(Style.RESET_ALL)
+                            f.write("[X] %s\n" % task)
+    else:
+        print(Fore.RED + "No To-Do list made for today, to make a new list use the '-n' flag.")
         print(Style.RESET_ALL)
-
-        task = input()
-        task_and_box = "[ ] %s" % task
-
-        # Opens the file and gets all the lines from it. Then re-opens the file in write mode and re-writes the lines
-        # back in until it gets to the task entered. When this tak is found it is re-written  with a cross in its box.
-        if task == 'quit':
-            break
-        else:
-            with open(todays_list, "r") as f:
-                lines = f.readlines()
-            with open(todays_list, "w") as f:
-                for line in lines:
-                    if line.strip("\n") != task_and_box:
-                        f.write(line)
-                    else:
-                        print(Fore.GREEN + "--- Task Complete! ---")
-                        print(task)
-                        print(Style.RESET_ALL)
-                        f.write("[X] %s\n" % task)
 
 
 #########
