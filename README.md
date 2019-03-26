@@ -17,8 +17,8 @@ The point of building this script is mostly to help me learn more about the Argp
 I will likely build on the base features further in the future with the more I learn.
 
 ## Requirements
-Works on both Windows and Linux command lines.
-This script uses **Python 3**, and also requires the **colorama** module to be installed.
+Works on both Windows and Linux command lines.<br>
+This script uses **Python 3**, and also requires the **colorama** module to be installed.<br>
 Colorama can be installed using ```sudo pip install colorama```.
 
 ## Usage
