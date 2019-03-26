@@ -12,24 +12,17 @@ can create, store, and edit a To-Do list from the command-line.
 * Saves lists in a folder called `ToDoLists` with following naming structure :
     `"<date>_ToDoList.txt"`
 
-## Possible Future Features
-* Ability to clear out old To-Do lists after a given date from saved folder.
-* Name lists.
-* Colour coding for priority.
-* Track progress with progress bars.
-* Give time frame for tasks.
-
-## To-Do
-* Need to add support for Linux. Currently due to how I'm using the os module to locate the ToDoLists folder, I'm only
-letting it run on Windows. This will be a easy implementation I just need to do it.
-
 ## Purpose
 The point of building this script is mostly to help me learn more about the Argparse module and file handling in Python.
 I will likely build on the base features further in the future with the more I learn.
 
+## Requirements
+This script uses **Python 3**, and also requires the **colorama** module to be installed.
+Colorama can be installed using ```sudo pip install colorama```.
+
 ## Usage
 ```
-todo.py [-h] [-n | -e | -v | -a | -m]
+python3 todo.py [-h] [-n | -e | -v | -a | -m]
 
 optional arguments:
   -h, --help  show this help message and exit
